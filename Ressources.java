@@ -23,4 +23,10 @@ public class Client
     public void setContrat(String contrat) {
         this.contrat = contrat;
     }
+    
+    public Client()
+    {
+    	this.nom = "new";
+        this.contrat = "new";
+    }
 }
