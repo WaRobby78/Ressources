@@ -1,12 +1,37 @@
+public class Salle
+{	
+    private String name;
+    private String place;
+    
+    public Salle()
+    {
+        this.name = "new";
+        this.place = "unknown";
+    }
 
-public class Salle {
+    public Salle(String name, String place)
+    {
+        this.name = name;
+        this.place = place;
+    }
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("test");
-		
-		return;
+    public String getName()
+    {
+        return name;
+    }
 
-	}
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
+    public String getPlace()
+    {
+        return place;
+    }
+
+    public void setPlace(String place)
+    {
+        this.place = place;
+    }
 }
