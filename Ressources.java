@@ -26,7 +26,7 @@ public class Ressources {
 	    	statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
 	    	statement.executeUpdate("drop table if exists person");
-	    	statement.executeUpdate("create table person (id integer, name string)");
+	    	statement.executeUpdate("create table Salle (id integer, name string)");
 	    	statement.executeUpdate("insert into person values(1, 'leo')");
 	    	ResultSet rs = statement.executeQuery("select * from person");
 	    	while(rs.next())
