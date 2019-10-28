@@ -1,36 +1,38 @@
+import java.util.Date;
+
 public class Creneau
 {	
-    private String start;
-    private String end;
+    private Date start;
+    private Date end;
     
     public Creneau()
     {
-        this.start = "unknow";
-        this.end = "unknown";
+        this.start = null;
+        this.end = null;
     }
 
-    public Creneau(String start, String end)
+    public Creneau(Date start, Date end)
     {
         this.start = start;
         this.end = end;
     }
 
-    public String getStart()
+    public Date getStart()
     {
         return start;
     }
 
-    public void setStart(String start)
+    public void setStart(Date start)
     {
         this.start = start;
     }
 
-    public String getEnd()
+    public Date getEnd()
     {
         return end;
     }
 
-    public void setEnd(String end)
+    public void setEnd(Date end)
     {
         this.end = end;
     }

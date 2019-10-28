@@ -5,6 +5,8 @@ public class Ressources {
 	{
 		Salle sa = new Salle();
 		Personne per = new Personne();
+		Creneau cre = new Creneau();
+		Reservation resa = new Reservation();
 		
 		return;
 	}
