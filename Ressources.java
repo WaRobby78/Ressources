@@ -1,14 +1,35 @@
-import java.util.Date;
 import java.sql.*;
+import java.util.*;
+import java.io.*;
 
 public class Ressources {
 	
+	public static void initialisation_bd(Connection connection)
+    {
+		try
+		{
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("drop table if exists Salle");
+	    	statement.executeUpdate("drop table if exists Personne");
+	    	//statement.executeUpdate("drop table if exists Creneau");
+	    	
+	    	//statement.executeUpdate("create table Salle (IDSalle integer, Name string, constraint IDSPK PRIMARY KEY (IDSalle))");
+	    	statement.executeUpdate("create table Salle (IDSalle INTEGER PRIMARY KEY AUTOINCREMENT, Name string)");
+	    	statement.executeUpdate("create table Personne (IDPersonne INTEGER PRIMARY KEY AUTOINCREMENT, Name string)");
+	    	//statement.executeUpdate("create table Creneau (start date, end date)");
+	    	
+		}
+	    catch(SQLException e)
+	    {
+	    	// if the error message is "out of memory", it probably means no database file is found
+	    	System.err.println(e.getMessage());
+	    }
+	    
+        return ;
+    }
+	
 	public static void show_Tables(Connection connection)
     {
-		//for more informations !!!!
-		//https://stackoverflow.com/questions/34774331/how-to-get-table-information-in-a-database-sqlite
-		
-		
 		try
 		{
 			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
@@ -19,34 +40,60 @@ public class Ressources {
 		}
 	    catch(SQLException e)
 	    {
-	    	// if the error message is "out of memory", 
-	    	// it probably means no database file is found
+	    	// if the error message is "out of memory", it probably means no database file is found
 	    	System.err.println(e.getMessage());
 	    }
-	    finally
+		
+        return ;
+    }
+	
+	public static void add_Salle(Connection connection, String name)
+    {
+		try
+		{
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("insert into Salle (Name) values('"+name+"')");
+		}
+	    catch(SQLException e)
 	    {
-	    	try
-	    	{
-	    		if(connection != null)
-	    			connection.close();
-	    	}
-	    	catch(SQLException e)
-	    	{
-	    		// connection close failed.
-	    		System.err.println(e);
-	    	}
+	    	// if the error message is "out of memory", it probably means no database file is found
+	    	System.err.println(e.getMessage());
 	    }
 	    
         return ;
     }
-
+	
+	public static void show_Salle(Connection connection)
+    {
+		try
+		{
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT * FROM Salle");
+	    	while(rs.next())
+	    	{
+	    		// read the result set
+	    		System.out.println("id = " + rs.getInt("IDSalle"));
+	    		System.out.println("name = " + rs.getString("Name"));
+	    	}
+		}
+	    catch(SQLException e)
+	    {
+	    	// if the error message is "out of memory", it probably means no database file is found
+	    	System.err.println(e.getMessage());
+	    }
+		
+        return ;
+    }
+	
 	public static void main(String[] args) throws ClassNotFoundException
 	{
-		Salle sa = new Salle();
+		Scanner scan = new Scanner(System.in);
+		String test;
+		
+		/*Salle sa = new Salle();
 		Personne per = new Personne();
 		Creneau cre = new Creneau();
-		Reservation resa = new Reservation();
-		
+		Reservation resa = new Reservation();*/
 		
 		// load the sqlite-JDBC driver using the current class loader
 	    Class.forName("org.sqlite.JDBC");
@@ -55,38 +102,47 @@ public class Ressources {
 	    try
 	    {
 	    	// create a database connection
-	    	//connection = DriverManager.getConnection("jdbc:sqlite:");
 	    	connection = DriverManager.getConnection("jdbc:sqlite:mydatabase.db");
-	    	
 	    	Statement statement = connection.createStatement();
 	    	
 	    	statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-	    	statement.executeUpdate("drop table if exists Salle");
-	    	statement.executeUpdate("drop table if exists Personne");
-	    	//statement.executeUpdate("drop table if exists Creneau");
 	    	
-	    	statement.executeUpdate("create table Salle (IDSalle integer, Name string, constraint IDSPK PRIMARY KEY (IDSalle))");
-	    	statement.executeUpdate("create table Personne (IDPersonne integer, name string, constraint IDPPK PRIMARY KEY (IDPersonne))");
-	    	//statement.executeUpdate("create table Creneau (start date, end date)");
-	    	
-	    	show_Tables(connection);
-	    	
-	    	/*statement.executeUpdate("insert into person values(1, 'leo')");
-	    	ResultSet rs = statement.executeQuery("SELECT * FROM sqlite_master");
-	    	while(rs.next())
-	    	{
-	    		// read the result set
-	    		System.out.println("name = " + rs.getString("name"));
-	    		System.out.println("id = " + rs.getInt("id"));
-	    		System.out.println(rs);
-	    	}*/
-	    	
+	    	do
+			{
+				System.out.println("");
+				System.out.println(" To show all the Tables from your database, enter all.");
+				System.out.println(" To add something in one of your databse enter, add.");
+				System.out.println(" To the containts of one of your Tables, enter show.");
+				System.out.println(" To reset everything, enter init.");
+				System.out.println(" To exit the programm, enter exit.");
+				System.out.println();
+				test = scan.next();
+				
+				if(test.toLowerCase().equals("all"))
+				{
+					show_Tables(connection);
+				}
+				
+				if(test.toLowerCase().equals("show"))
+				{
+					show_Salle(connection);
+				}
+				
+				if(test.toLowerCase().equals("init"))
+				{
+					initialisation_bd(connection);
+				}
+				
+				if(test.toLowerCase().equals("add"))
+				{
+					add_Salle(connection,"bjr");
+				}
+			
+			}while(!test.toLowerCase().equals("exit"));
 	    }
 	    catch(SQLException e)
 	    {
-	    	// if the error message is "out of memory", 
-	    	// it probably means no database file is found
+	    	// if the error message is "out of memory", it probably means no database file is found
 	    	System.err.println(e.getMessage());
 	    }
 	    finally
@@ -103,7 +159,8 @@ public class Ressources {
 	    	}
 	    }
 	    
-	    System.out.println("pas de bug");
+	    System.out.println("Goodbye !");
+		scan.close();
 		
 		return;
 	}
