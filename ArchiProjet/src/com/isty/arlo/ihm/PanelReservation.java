@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -159,6 +160,11 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputPersonne.getSelectedItem() == null || inputSalle.getSelectedItem() == null || inputCreneau.getSelectedItem() == null) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut que tous les champs soient renseignés!");
+				return;
+			}
+			
 			Integer idPersonne = getIdFromComboBoxItem((String) inputPersonne.getSelectedItem());
 			Personne personne = DatabaseManager.getPersonneFromId(idPersonne);
 			Integer idSalle = getIdFromComboBoxItem((String) inputSalle.getSelectedItem());

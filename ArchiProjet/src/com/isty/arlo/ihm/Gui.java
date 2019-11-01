@@ -1,24 +1,31 @@
 package com.isty.arlo.ihm;
 
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-public class Gui extends JPanel implements MouseListener{
+import com.isty.arlo.db.DatabaseManager;
+
+public class Gui extends JPanel implements ActionListener, MouseListener{
 	private static final long serialVersionUID = 1L;
 
 	private static JTabbedPane onglets;
 	
-	private static JPanel panelSalle;
-	private static JPanel panelPersonne;
-	private static JPanel panelCreneau;
+	private static PanelSalle panelSalle;
+	private static PanelPersonne panelPersonne;
+	private static PanelCreneau panelCreneau;
 	private static PanelReservation panelReservation;
+	
+	private static JButton buttonResetDB;
 	
 	
 	public Gui() {
@@ -38,6 +45,9 @@ public class Gui extends JPanel implements MouseListener{
 		
 		onglets.addMouseListener(this);
 		
+		buttonResetDB = new JButton("Reset database");
+		buttonResetDB.addActionListener(this);
+		
 	}
 
 	
@@ -45,12 +55,29 @@ public class Gui extends JPanel implements MouseListener{
 		JFrame fenetre = new JFrame("ARLO IHM");
 		fenetre.setMinimumSize(new Dimension(640, 480));
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(onglets, BorderLayout.CENTER);
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(onglets);
+		add(buttonResetDB);
 		fenetre.add(this);
 		
 		
 		fenetre.pack();
 		fenetre.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == buttonResetDB) {
+			DatabaseManager.createTable("personne");
+			panelPersonne.updateTable();
+			DatabaseManager.createTable("salle");
+			panelSalle.updateTable();
+			DatabaseManager.createTable("creneau");
+			panelCreneau.updateTable();
+			DatabaseManager.createTable("reservation");
+			panelReservation.update();
+			panelReservation.updateTable();
+		}
 	}
 
 
@@ -89,5 +116,4 @@ public class Gui extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

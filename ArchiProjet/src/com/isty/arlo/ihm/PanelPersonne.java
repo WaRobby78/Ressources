@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -120,6 +121,10 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputNom.getText().equals("") || inputPrenom.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut entrer le nom et le prénom de la personne!");
+				return;
+			}
 			if(DatabaseManager.insertEntite(new Personne(inputNom.getText(), inputPrenom.getText(), inputJob.getText()), "personne"))
 				this.updateTable();
 			inputNom.setText("");

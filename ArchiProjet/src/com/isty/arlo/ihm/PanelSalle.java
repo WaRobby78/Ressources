@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -104,6 +105,10 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputNom.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un nom de salle!");
+				return;
+			}
 			if(DatabaseManager.insertEntite(new Salle(inputNom.getText()), "salle"))
 				this.updateTable();
 			
