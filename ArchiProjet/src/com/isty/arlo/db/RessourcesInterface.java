@@ -15,8 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DatabaseManager {
+public interface RessourcesInterface {
 	
+	//CREATION TABLE BASE DE DONNEES
 	//Renvoie true si la table a bien été créée
 	public static boolean createTable(String tableName) {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
@@ -54,6 +55,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
+	//CREATION UN OBJET
 	//Renvoie true si la personne a bien été insérée dans la table
 	public static boolean insertEntite(Object objet, String tableName) {
 			
@@ -78,8 +80,6 @@ public class DatabaseManager {
 		   }
 		   else if(tableName.equals("reservation")) {
 			   Reservation reservation = (Reservation) objet;
-			   System.out.println(reservation.getPersonne().getNom() + " " + reservation.getSalle().getNom() + " " 
-			   + reservation.getCreneau().getStrStart() + " " + reservation.getCreneau().getStrEnd());
 			   statement.executeUpdate("INSERT INTO reservation(idPersonne, idSalle, idCreneau) "
 			   		+ "values('"+reservation.getPersonne().getId()+"', '"+reservation.getSalle().getId()+"', '"+reservation.getCreneau().getId()+"')");
 		   }
@@ -96,6 +96,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
+	//SUPPRESSION UN OBJET
 	//Renvoie true si la personne a bien été supprimée dans la table
 	public static boolean deleteEntite(Integer id, String tableName) {
 		
@@ -117,6 +118,7 @@ public class DatabaseManager {
 		return true;
 	}
 	
+	//LECTURE PLUSIEURS PERSONNE
 	//Renvoie la liste des personnes stockées dans la base de données
 	public static ArrayList<Personne> getAllPersonne() {
 		ArrayList<Personne> listePersonne = new ArrayList<Personne>();
@@ -145,6 +147,7 @@ public class DatabaseManager {
 		return listePersonne;
 	}
 	
+	//LECTURE UNE PERSONNE
 	public static Personne getPersonneFromId(Integer id) {
 		Personne res = null;
 		for(Personne personne : getAllPersonne()) {
@@ -156,6 +159,8 @@ public class DatabaseManager {
 		return res;
 	}
 	
+	
+	//LECTURE PLUSIEURS SALLES
 	//Renvoie la liste des salles stockées dans la base de données
 	public static ArrayList<Salle> getAllSalle() {
 		ArrayList<Salle> listeSalle = new ArrayList<Salle>();
@@ -184,6 +189,7 @@ public class DatabaseManager {
 		return listeSalle;
 	}
 	
+	//LECTURE UNE SALLE
 	public static Salle getSalleFromId(Integer id) {
 		Salle res = null;
 		for(Salle salle : getAllSalle()) {
@@ -195,6 +201,7 @@ public class DatabaseManager {
 		return res;
 	}
 	
+	//LECTURE PLUSIEURS CRENEAUX
 	//Renvoie la liste des créneaux stockées dans la base de données
 	public static ArrayList<Creneau> getAllCreneau() {
 		ArrayList<Creneau> listeCreneau = new ArrayList<Creneau>();
@@ -227,6 +234,7 @@ public class DatabaseManager {
 		return listeCreneau;
 	}
 	
+	//LECTURE UN CRENEAU
 	public static Creneau getCreneauFromId(Integer id) {
 		Creneau res = null;
 		for(Creneau creneau : getAllCreneau()) {
@@ -238,6 +246,8 @@ public class DatabaseManager {
 		return res;
 	}
 	
+	
+	//LECTURE PLUSIEURS RESERVATIONS
 	//Renvoie la liste des personnes stockées dans la base de données
 	public static ArrayList<Reservation> getAllReservation() {
 		ArrayList<Reservation> listeReservation = new ArrayList<Reservation>();
@@ -269,6 +279,7 @@ public class DatabaseManager {
 		return listeReservation;
 	}
 	
+	//MODIFICATION UNE RESERVATION
 	// Renvoie true si le creneau de la reservation a bien été modifié
 	public static boolean updateCreneauReservation(Integer idReservation, Integer idCreneau) {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }

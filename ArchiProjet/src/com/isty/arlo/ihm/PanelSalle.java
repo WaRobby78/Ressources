@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.isty.arlo.db.DatabaseManager;
+import com.isty.arlo.db.RessourcesInterface;
 import com.isty.arlo.domain.Salle;
 
 public class PanelSalle extends JPanel implements ActionListener, MouseListener {
@@ -62,7 +62,7 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 		ArrayList<Salle> listeSalles = null;
 		String[] header = {"id", "nom"};
 		Object[][] data = null;
-		listeSalles = DatabaseManager.getAllSalle();
+		listeSalles = RessourcesInterface.getAllSalle();
 		data = new Object[listeSalles.size()][2];
 		int row = 0;
 		for(Salle salle : listeSalles) {
@@ -89,7 +89,7 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 		ArrayList<Salle> listeSalles = null;
 		String[] header = {"id", "nom"};
 		Object[][] data = null;
-		listeSalles = DatabaseManager.getAllSalle();
+		listeSalles = RessourcesInterface.getAllSalle();
 		data = new Object[listeSalles.size()][2];
 		int row = 0;
 		for(Salle salle : listeSalles) {
@@ -109,13 +109,13 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un nom de salle!");
 				return;
 			}
-			if(DatabaseManager.insertEntite(new Salle(inputNom.getText()), "salle"))
+			if(RessourcesInterface.insertEntite(new Salle(inputNom.getText()), "salle"))
 				this.updateTable();
 			
 			inputNom.setText("");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(DatabaseManager.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "salle"))
+			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "salle"))
 				this.updateTable();
 		}
 	}

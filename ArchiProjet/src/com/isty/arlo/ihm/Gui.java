@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import com.isty.arlo.db.DatabaseManager;
+import com.isty.arlo.db.RessourcesInterface;
 
 public class Gui extends JPanel implements ActionListener, MouseListener{
 	private static final long serialVersionUID = 1L;
@@ -68,13 +68,13 @@ public class Gui extends JPanel implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonResetDB) {
-			DatabaseManager.createTable("personne");
+			RessourcesInterface.createTable("personne");
 			panelPersonne.updateTable();
-			DatabaseManager.createTable("salle");
+			RessourcesInterface.createTable("salle");
 			panelSalle.updateTable();
-			DatabaseManager.createTable("creneau");
+			RessourcesInterface.createTable("creneau");
 			panelCreneau.updateTable();
-			DatabaseManager.createTable("reservation");
+			RessourcesInterface.createTable("reservation");
 			panelReservation.update();
 			panelReservation.updateTable();
 		}

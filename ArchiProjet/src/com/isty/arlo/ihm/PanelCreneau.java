@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.isty.arlo.db.DatabaseManager;
+import com.isty.arlo.db.RessourcesInterface;
 import com.isty.arlo.domain.Creneau;
 
 public class PanelCreneau extends JPanel implements ActionListener, MouseListener {
@@ -128,7 +128,7 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 		ArrayList<Creneau> listeCreneaux = null;
 		String[] header = {"id", "date début", "date fin"};
 		Object[][] data = null;
-		listeCreneaux = DatabaseManager.getAllCreneau();
+		listeCreneaux = RessourcesInterface.getAllCreneau();
 		data = new Object[listeCreneaux.size()][3];
 		int row = 0;
 		for(Creneau creneau : listeCreneaux) {
@@ -156,7 +156,7 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 		ArrayList<Creneau> listeCreneaux = null;
 		String[] header = {"id", "date début", "date fin"};
 		Object[][] data = null;
-		listeCreneaux = DatabaseManager.getAllCreneau();
+		listeCreneaux = RessourcesInterface.getAllCreneau();
 		data = new Object[listeCreneaux.size()][3];
 		int row = 0;
 		for(Creneau creneau : listeCreneaux) {
@@ -217,12 +217,12 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 				JOptionPane.showMessageDialog(null, "Error: La date de début ne peut pas être supérieur à celle de fin!");
 			}
 			else {
-				if(DatabaseManager.insertEntite(new Creneau(debut, fin), "creneau"))
+				if(RessourcesInterface.insertEntite(new Creneau(debut, fin), "creneau"))
 					this.updateTable();
 			}
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(DatabaseManager.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "creneau"))
+			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "creneau"))
 				this.updateTable();
 		}
 	}

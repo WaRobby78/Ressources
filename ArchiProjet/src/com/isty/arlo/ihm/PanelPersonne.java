@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.isty.arlo.db.DatabaseManager;
+import com.isty.arlo.db.RessourcesInterface;
 import com.isty.arlo.domain.Personne;
 
 public class PanelPersonne extends JPanel implements ActionListener, MouseListener {
@@ -74,7 +74,7 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 		ArrayList<Personne> listePersonnes = null;
 		String[] header = {"id", "nom", "prenom", "job"};
 		Object[][] data = null;
-		listePersonnes = DatabaseManager.getAllPersonne();
+		listePersonnes = RessourcesInterface.getAllPersonne();
 		data = new Object[listePersonnes.size()][4];
 		int row = 0;
 		for(Personne personne : listePersonnes) {
@@ -103,7 +103,7 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 		ArrayList<Personne> listePersonnes = null;
 		String[] header = {"id", "nom", "prenom", "job"};
 		Object[][] data = null;
-		listePersonnes = DatabaseManager.getAllPersonne();
+		listePersonnes = RessourcesInterface.getAllPersonne();
 		data = new Object[listePersonnes.size()][4];
 		int row = 0;
 		for(Personne personne : listePersonnes) {
@@ -125,14 +125,14 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 				JOptionPane.showMessageDialog(null, "Error: Il faut entrer le nom et le prénom de la personne!");
 				return;
 			}
-			if(DatabaseManager.insertEntite(new Personne(inputNom.getText(), inputPrenom.getText(), inputJob.getText()), "personne"))
+			if(RessourcesInterface.insertEntite(new Personne(inputNom.getText(), inputPrenom.getText(), inputJob.getText()), "personne"))
 				this.updateTable();
 			inputNom.setText("");
 			inputPrenom.setText("");
 			inputJob.setText("");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(DatabaseManager.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "personne"))
+			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "personne"))
 				this.updateTable();
 		}
 	}

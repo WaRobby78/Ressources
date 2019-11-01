@@ -17,7 +17,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.isty.arlo.db.DatabaseManager;
+import com.isty.arlo.db.RessourcesInterface;
 import com.isty.arlo.domain.Creneau;
 import com.isty.arlo.domain.Personne;
 import com.isty.arlo.domain.Reservation;
@@ -49,7 +49,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		JLabel labelPersonne = new JLabel("Personne");
 		panelGestion.add(labelPersonne);
 		inputPersonne = new JComboBox<String>();
-		for(Personne personne : DatabaseManager.getAllPersonne()) {
+		for(Personne personne : RessourcesInterface.getAllPersonne()) {
 			inputPersonne.addItem("[" + personne.getId() + "] " + personne.getNom() + " " + personne.getPrenom());
 		}
 		panelGestion.add(inputPersonne);
@@ -58,7 +58,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		JLabel labelSalle = new JLabel("Salle");
 		panelGestion.add(labelSalle);
 		inputSalle = new JComboBox<String>();
-		for(Salle salle : DatabaseManager.getAllSalle()) {
+		for(Salle salle : RessourcesInterface.getAllSalle()) {
 			inputSalle.addItem("[" + salle.getId() + "] " + salle.getNom());
 		}
 		panelGestion.add(inputSalle);
@@ -68,7 +68,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		panelGestion.add(labelCreneau);
 		inputCreneau = new JComboBox<String>();
 		inputModifCreneau = new JComboBox<String>();
-		for(Creneau creneau : DatabaseManager.getAllCreneau()) {
+		for(Creneau creneau : RessourcesInterface.getAllCreneau()) {
 			inputCreneau.addItem("[" + creneau.getId() + "] " + creneau.getStrStart() + " --> " + creneau.getStrEnd());
 			inputModifCreneau.addItem("[" + creneau.getId() + "] " + creneau.getStrStart() + " --> " + creneau.getStrEnd());
 		}
@@ -102,7 +102,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		ArrayList<Reservation> listeReservation = null;
 		String[] header = {"id", "personne", "salle", "créneau début", "créneau fin"};
 		Object[][] data = null;
-		listeReservation = DatabaseManager.getAllReservation();
+		listeReservation = RessourcesInterface.getAllReservation();
 		data = new Object[listeReservation.size()][5];
 		int row = 0;
 		for(Reservation reservation : listeReservation) {
@@ -132,7 +132,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		ArrayList<Reservation> listeReservation = null;
 		String[] header = {"id", "personne", "salle", "créneau début", "créneau fin"};
 		Object[][] data = null;
-		listeReservation = DatabaseManager.getAllReservation();
+		listeReservation = RessourcesInterface.getAllReservation();
 		data = new Object[listeReservation.size()][5];
 		int row = 0;
 		for(Reservation reservation : listeReservation) {
@@ -166,23 +166,23 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 			}
 			
 			Integer idPersonne = getIdFromComboBoxItem((String) inputPersonne.getSelectedItem());
-			Personne personne = DatabaseManager.getPersonneFromId(idPersonne);
+			Personne personne = RessourcesInterface.getPersonneFromId(idPersonne);
 			Integer idSalle = getIdFromComboBoxItem((String) inputSalle.getSelectedItem());
-			Salle salle = DatabaseManager.getSalleFromId(idSalle);
+			Salle salle = RessourcesInterface.getSalleFromId(idSalle);
 			Integer idCreneau = getIdFromComboBoxItem((String) inputCreneau.getSelectedItem());
-			Creneau creneau = DatabaseManager.getCreneauFromId(idCreneau);
+			Creneau creneau = RessourcesInterface.getCreneauFromId(idCreneau);
 			
-			if(DatabaseManager.insertEntite(new Reservation(personne, salle, creneau), "reservation"))
+			if(RessourcesInterface.insertEntite(new Reservation(personne, salle, creneau), "reservation"))
 				this.updateTable();
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(DatabaseManager.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "reservation"))
+			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "reservation"))
 				this.updateTable();
 		}
 		else if(e.getSource() == buttonModifCreneau && table.getSelectedRow() != -1) {
 			Integer idReservation = (Integer)tableModel.getValueAt(table.getSelectedRow(), 0);
 			Integer idCreneau = getIdFromComboBoxItem((String) inputModifCreneau.getSelectedItem());
-			if(DatabaseManager.updateCreneauReservation(idReservation, idCreneau))
+			if(RessourcesInterface.updateCreneauReservation(idReservation, idCreneau))
 				this.updateTable();
 		}
 	}
@@ -190,18 +190,18 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 	
 	public void update() {
 		inputPersonne.removeAllItems();
-		for(Personne personne : DatabaseManager.getAllPersonne()) {
+		for(Personne personne : RessourcesInterface.getAllPersonne()) {
 			inputPersonne.addItem("[" + personne.getId() + "] " + personne.getNom() + " " + personne.getPrenom());
 		}
 		
 		inputSalle.removeAllItems();
-		for(Salle salle : DatabaseManager.getAllSalle()) {
+		for(Salle salle : RessourcesInterface.getAllSalle()) {
 			inputSalle.addItem("[" + salle.getId() + "] " + salle.getNom());
 		}
 		
 		inputCreneau.removeAllItems();
 		inputModifCreneau.removeAllItems();
-		for(Creneau creneau : DatabaseManager.getAllCreneau()) {
+		for(Creneau creneau : RessourcesInterface.getAllCreneau()) {
 			inputCreneau.addItem("[" + creneau.getId() + "] " + creneau.getStrStart() + " --> " + creneau.getStrEnd());
 			inputModifCreneau.addItem("[" + creneau.getId() + "] " + creneau.getStrStart() + " --> " + creneau.getStrEnd());
 		}
