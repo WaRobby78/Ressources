@@ -52,7 +52,7 @@ public class Gui extends JPanel implements ActionListener, MouseListener{
 
 	
 	public void createFrame() {
-		JFrame fenetre = new JFrame("ARLO IHM");
+		JFrame fenetre = new JFrame("ARLO Ressources IHM");
 		fenetre.setMinimumSize(new Dimension(640, 480));
 		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
