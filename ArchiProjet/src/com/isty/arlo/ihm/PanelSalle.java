@@ -111,6 +111,8 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 			}
 			if(RessourcesInterface.insertEntite(new Salle(inputNom.getText()), "salle"))
 				this.updateTable();
+			else
+				JOptionPane.showMessageDialog(null, "Error: La salle existe déjà!");
 			
 			inputNom.setText("");
 		}

@@ -32,15 +32,15 @@ public interface RessourcesInterface {
 		   }
 		   else if (tableName.equals("salle")){
 			   statement.executeUpdate("DROP TABLE IF EXISTS salle");
-			   statement.executeUpdate("CREATE TABLE salle (id INTEGER PRIMARY KEY, nom STRING)");
+			   statement.executeUpdate("CREATE TABLE salle (id INTEGER PRIMARY KEY, nom STRING UNIQUE)");
 		   }
 		   else if (tableName.equals("creneau")){
 			   statement.executeUpdate("DROP TABLE IF EXISTS creneau");
-			   statement.executeUpdate("CREATE TABLE creneau (id INTEGER PRIMARY KEY, start DATE, end DATE)");
+			   statement.executeUpdate("CREATE TABLE creneau (id INTEGER PRIMARY KEY, start DATE, end DATE, UNIQUE(start, end))");
 		   }
 			else if (tableName.equals("reservation")){
 				statement.executeUpdate("DROP TABLE IF EXISTS reservation");
-				statement.executeUpdate("CREATE TABLE reservation (id INTEGER PRIMARY KEY, idPersonne INTEGER, idSalle INTEGER, idCreneau INTEGER)");
+				statement.executeUpdate("CREATE TABLE reservation (id INTEGER PRIMARY KEY, idPersonne INTEGER, idSalle INTEGER, idCreneau INTEGER, UNIQUE(idPersonne, idSalle, idCreneau))");
 			}
 		   
 		}

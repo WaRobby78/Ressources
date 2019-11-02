@@ -174,6 +174,8 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 			
 			if(RessourcesInterface.insertEntite(new Reservation(personne, salle, creneau), "reservation"))
 				this.updateTable();
+			else
+				JOptionPane.showMessageDialog(null, "Error: La réservation existe déjà!");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
 			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "reservation"))

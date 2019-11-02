@@ -219,6 +219,8 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 			else {
 				if(RessourcesInterface.insertEntite(new Creneau(debut, fin), "creneau"))
 					this.updateTable();
+				else
+					JOptionPane.showMessageDialog(null, "Error: Le créneau existe déjà!");
 			}
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
