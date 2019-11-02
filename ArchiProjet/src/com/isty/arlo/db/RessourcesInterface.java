@@ -17,13 +17,15 @@ import java.util.Date;
 
 public interface RessourcesInterface {
 	
+	public static String dbConnection = "jdbc:sqlite:database.db";
+	
 	//CREATION TABLE BASE DE DONNEES
 	//Renvoie true si la table a bien été créée
 	public static boolean createTable(String tableName) {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   
 		   if(tableName.equals("personne")){
@@ -62,7 +64,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   if(tableName.equals("personne")) {
 			   Personne personne = (Personne) objet;
@@ -103,7 +105,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   statement.executeUpdate("DELETE FROM " + tableName + " WHERE id='"+id+"'");
 		}
@@ -125,7 +127,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   
 		   ResultSet resultSet = statement.executeQuery("SELECT * FROM personne");
@@ -167,7 +169,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) { e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   
 		   ResultSet resultSet = statement.executeQuery("SELECT * FROM salle");
@@ -208,7 +210,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) { e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   ResultSet resultSet = statement.executeQuery("SELECT * FROM creneau");
 		   while(resultSet.next()) {
@@ -254,7 +256,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   
 		   ResultSet resultSet = statement.executeQuery("SELECT * FROM reservation");
@@ -285,7 +287,7 @@ public interface RessourcesInterface {
 		try { Class.forName("org.sqlite.JDBC"); } catch (ClassNotFoundException e1) {e1.printStackTrace(); }
 		Connection connection = null;
 		try{
-		   connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+		   connection = DriverManager.getConnection(dbConnection);
 		   Statement statement = connection.createStatement();
 		   statement.executeUpdate("UPDATE reservation SET idCreneau='"+idCreneau+"' WHERE id='"+idReservation+"'");
 		}
