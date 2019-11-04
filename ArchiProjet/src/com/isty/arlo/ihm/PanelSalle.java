@@ -25,6 +25,7 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 	
 	private static JTable table;
 	private static DefaultTableModel tableModel;
+	private static JTextField inputId;
 	private static JTextField inputNom;
 	private static JButton buttonAdd;
 	private static JButton buttonDel;
@@ -39,6 +40,12 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 		
 		// Formulaire d'ajout d'une Salle
 		JPanel panelGestion = new JPanel();
+		
+		JLabel labelId = new JLabel("Id");
+		inputId = new JTextField();
+		panelGestion.add(labelId);
+		panelGestion.add(inputId);
+		
 		JLabel labelNom = new JLabel("Nom");
 		inputNom = new JTextField();
 		panelGestion.add(labelNom);
@@ -105,19 +112,32 @@ public class PanelSalle extends JPanel implements ActionListener, MouseListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputId.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un id à l'entité!");
+				return;
+			}
+
 			if(inputNom.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un nom de salle!");
 				return;
 			}
-			if(RessourcesInterface.insertEntite(new Salle(inputNom.getText()), "salle"))
+			for(Salle salle : RessourcesInterface.getAllSalle()) {
+				if(salle.getId().equals(inputId.getText())) {
+					JOptionPane.showMessageDialog(null, "Error: L'id existe déjà!");
+					return;
+				}
+			}
+			
+			if(RessourcesInterface.insertEntite(new Salle(inputId.getText(), inputNom.getText()), "salle"))
 				this.updateTable();
 			else
 				JOptionPane.showMessageDialog(null, "Error: La salle existe déjà!");
 			
+			inputId.setText("");
 			inputNom.setText("");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "salle"))
+			if(RessourcesInterface.deleteEntite((String)tableModel.getValueAt(table.getSelectedRow(), 0), "salle"))
 				this.updateTable();
 		}
 	}

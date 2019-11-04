@@ -2,30 +2,25 @@ package com.isty.arlo.domain;
 
 public class Reservation
 {
-	private Integer id;
+	private String id;
 	private Personne personne;
     private Salle salle;
     private Creneau creneau;
     
-    public Reservation()
-    {
-        this.salle = null;
-        this.creneau = null;
-        this.personne = null;
-    }
 
-    public Reservation(Personne personne, Salle salle, Creneau creneau)
+    public Reservation(String id, Personne personne, Salle salle, Creneau creneau)
     {
+    	this.id = id;
         this.salle = salle;
         this.creneau = creneau;
         this.personne = personne;
     }
     
-    public Integer getId() {
+    public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

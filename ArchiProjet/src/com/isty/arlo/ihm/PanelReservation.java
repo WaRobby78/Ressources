@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,6 +29,7 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 	
 	private static JTable table;
 	private static DefaultTableModel tableModel;
+	private static JTextField inputId;
 	private static JComboBox<String> inputPersonne;
 	private static JComboBox<String> inputSalle;
 	private static JComboBox<String> inputCreneau;
@@ -46,6 +48,12 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		
 		// Formulaire d'ajout d'une Salle
 		JPanel panelGestion = new JPanel();
+		
+		JLabel labelId = new JLabel("Id");
+		inputId = new JTextField();
+		panelGestion.add(labelId);
+		panelGestion.add(inputId);
+		
 		JLabel labelPersonne = new JLabel("Personne");
 		panelGestion.add(labelPersonne);
 		inputPersonne = new JComboBox<String>();
@@ -150,40 +158,53 @@ public class PanelReservation extends JPanel implements ActionListener, MouseLis
 		inputModifCreneau.setEnabled(false);
 	}
 	
-	private Integer getIdFromComboBoxItem(String item) {
+	private String getIdFromComboBoxItem(String item) {
 		String getId = "";
 		for(int i = 1; Character.isDigit(item.charAt(i)); i++)
 			getId+= item.charAt(i);
-		return Integer.parseInt(getId);
+		return getId;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputId.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un id à l'entité!");
+				return;
+			}
+
 			if(inputPersonne.getSelectedItem() == null || inputSalle.getSelectedItem() == null || inputCreneau.getSelectedItem() == null) {
 				JOptionPane.showMessageDialog(null, "Error: Il faut que tous les champs soient renseignés!");
 				return;
 			}
 			
-			Integer idPersonne = getIdFromComboBoxItem((String) inputPersonne.getSelectedItem());
+			for(Reservation reservation : RessourcesInterface.getAllReservation()) {
+				if(reservation.getId().equals(inputId.getText())) {
+					JOptionPane.showMessageDialog(null, "Error: L'id existe déjà!");
+					return;
+				}
+			}
+			
+			String idPersonne = getIdFromComboBoxItem((String) inputPersonne.getSelectedItem());
 			Personne personne = RessourcesInterface.getPersonneFromId(idPersonne);
-			Integer idSalle = getIdFromComboBoxItem((String) inputSalle.getSelectedItem());
+			String idSalle = getIdFromComboBoxItem((String) inputSalle.getSelectedItem());
 			Salle salle = RessourcesInterface.getSalleFromId(idSalle);
-			Integer idCreneau = getIdFromComboBoxItem((String) inputCreneau.getSelectedItem());
+			String idCreneau = getIdFromComboBoxItem((String) inputCreneau.getSelectedItem());
 			Creneau creneau = RessourcesInterface.getCreneauFromId(idCreneau);
 			
-			if(RessourcesInterface.insertEntite(new Reservation(personne, salle, creneau), "reservation"))
+			if(RessourcesInterface.insertEntite(new Reservation(inputId.getText(), personne, salle, creneau), "reservation"))
 				this.updateTable();
 			else
 				JOptionPane.showMessageDialog(null, "Error: La réservation existe déjà!");
+			inputId.setText("");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "reservation"))
+			if(RessourcesInterface.deleteEntite((String)tableModel.getValueAt(table.getSelectedRow(), 0), "reservation"))
 				this.updateTable();
 		}
 		else if(e.getSource() == buttonModifCreneau && table.getSelectedRow() != -1) {
-			Integer idReservation = (Integer)tableModel.getValueAt(table.getSelectedRow(), 0);
-			Integer idCreneau = getIdFromComboBoxItem((String) inputModifCreneau.getSelectedItem());
+			String idReservation = (String)tableModel.getValueAt(table.getSelectedRow(), 0);
+			String idCreneau = getIdFromComboBoxItem((String) inputModifCreneau.getSelectedItem());
 			if(RessourcesInterface.updateCreneauReservation(idReservation, idCreneau))
 				this.updateTable();
 		}

@@ -16,17 +16,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.isty.arlo.db.RessourcesInterface;
-import com.isty.arlo.domain.Creneau;
+import com.isty.arlo.domain.Creneau;                             
 
 public class PanelCreneau extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	
 	private static JTable table;
 	private static DefaultTableModel tableModel;
+	private static JTextField inputId;
 	private static JComboBox<Integer> inputAnneeStart;
 	private static JComboBox<String> inputMoisStart;
 	private static JComboBox<Integer> inputJourStart;
@@ -48,6 +50,12 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 		
 		// Formulaire d'ajout d'une Créneau
 		JPanel panelGestion = new JPanel();
+		
+		JLabel labelId = new JLabel("Id");
+		inputId = new JTextField();
+		panelGestion.add(labelId);
+		panelGestion.add(inputId);
+		
 		JLabel labelDebut = new JLabel("DEBUT");
 		inputAnneeStart = new JComboBox<Integer>();
 		inputAnneeStart.addItem(2019);
@@ -172,6 +180,18 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(inputId.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Error: Il faut entrer un id à l'entité!");
+			return;
+		}
+
+		for(Creneau creneau : RessourcesInterface.getAllCreneau()) {
+			if(creneau.getId().equals(inputId.getText())) {
+				JOptionPane.showMessageDialog(null, "Error: L'id existe déjà!");
+				return;
+			}
+		}
+		
 		if(e.getSource() == inputAnneeStart) {
 			if((Integer)inputAnneeStart.getSelectedItem()%4 == 0 && inputMoisStart.getSelectedIndex() == 1)
 				inputJourStart.addItem(29);
@@ -217,14 +237,15 @@ public class PanelCreneau extends JPanel implements ActionListener, MouseListene
 				JOptionPane.showMessageDialog(null, "Error: La date de début ne peut pas être supérieur à celle de fin!");
 			}
 			else {
-				if(RessourcesInterface.insertEntite(new Creneau(debut, fin), "creneau"))
+				if(RessourcesInterface.insertEntite(new Creneau(inputId.getText(), debut, fin), "creneau"))
 					this.updateTable();
 				else
 					JOptionPane.showMessageDialog(null, "Error: Le créneau existe déjà!");
+				inputId.setText("");
 			}
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "creneau"))
+			if(RessourcesInterface.deleteEntite((String)tableModel.getValueAt(table.getSelectedRow(), 0), "creneau"))
 				this.updateTable();
 		}
 	}

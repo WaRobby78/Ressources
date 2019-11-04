@@ -5,29 +5,25 @@ import java.util.Date;
 
 public class Creneau
 {
-	private Integer id;
+	private String id;
     private Date start;
     private Date end;
     
-    public Creneau()
-    {
-        this.start = null;
-        this.end = null;
-    }
 
-    public Creneau(Date start, Date end)
+    public Creneau(String id, Date start, Date end)
     {
+    	this.id = id;
         this.start = start;
         this.end = end;
     }
     
     
 
-    public Integer getId() {
+    public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

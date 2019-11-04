@@ -25,6 +25,7 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 	
 	private static JTable table;
 	private static DefaultTableModel tableModel;
+	private static JTextField inputId;
 	private static JTextField inputNom;
 	private static JTextField inputPrenom;
 	private static JTextField inputJob;
@@ -41,6 +42,12 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 		
 		// Formulaire d'ajout d'une Personne
 		JPanel panelGestion = new JPanel();
+		
+		JLabel labelId = new JLabel("Id");
+		inputId = new JTextField();
+		panelGestion.add(labelId);
+		panelGestion.add(inputId);
+		
 		JLabel labelNom = new JLabel("Nom");
 		inputNom = new JTextField();
 		panelGestion.add(labelNom);
@@ -121,18 +128,31 @@ public class PanelPersonne extends JPanel implements ActionListener, MouseListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonAdd) {
+			if(inputId.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Error: Il faut entrer un id à l'entité!");
+				return;
+			}
+
 			if(inputNom.getText().equals("") || inputPrenom.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Error: Il faut entrer le nom et le prénom de la personne!");
 				return;
 			}
-			if(RessourcesInterface.insertEntite(new Personne(inputNom.getText(), inputPrenom.getText(), inputJob.getText()), "personne"))
+			
+			for(Personne personne : RessourcesInterface.getAllPersonne()) {
+				if(personne.getId().equals(inputId.getText())) {
+					JOptionPane.showMessageDialog(null, "Error: L'id existe déjà!");
+					return;
+				}
+			}
+			if(RessourcesInterface.insertEntite(new Personne(inputId.getText(), inputNom.getText(), inputPrenom.getText(), inputJob.getText()), "personne"))
 				this.updateTable();
+			inputId.setText("");
 			inputNom.setText("");
 			inputPrenom.setText("");
 			inputJob.setText("");
 		}
 		else if(e.getSource() == buttonDel && table.getSelectedRow() != -1) {
-			if(RessourcesInterface.deleteEntite((Integer)tableModel.getValueAt(table.getSelectedRow(), 0), "personne"))
+			if(RessourcesInterface.deleteEntite((String)tableModel.getValueAt(table.getSelectedRow(), 0), "personne"))
 				this.updateTable();
 		}
 	}

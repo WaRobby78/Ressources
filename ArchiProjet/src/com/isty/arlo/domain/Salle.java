@@ -2,24 +2,20 @@ package com.isty.arlo.domain;
 
 public class Salle
 {	
-	private Integer id;
+	private String id;
     private String nom;
-    
-    public Salle()
-    {
-        this.nom = "new";
-    }
 
-    public Salle(String nom)
+    public Salle(String id, String nom)
     {
+    	this.id = id;
         this.nom = nom;
     }
 
-    public Integer getId() {
+    public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
